@@ -1,6 +1,17 @@
 package com.uniovi.sdi2324814spring.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Mark {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String description;
+    private Double score;
 
     public Mark() {
     }
@@ -13,8 +24,6 @@ public class Mark {
     public String toString() {
         return "Mark{" + "id=" + id + ", description='" + description + '\'' + ", score=" + score + '}';
     }
-
-    private Long id;
 
     public Long getId() {
         return id;
@@ -39,7 +48,4 @@ public class Mark {
     public void setScore(Double score) {
         this.score = score;
     }
-
-    private String description;
-    private Double score;
 }
