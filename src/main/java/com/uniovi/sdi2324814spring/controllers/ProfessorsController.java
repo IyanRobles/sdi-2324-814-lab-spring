@@ -2,9 +2,11 @@ package com.uniovi.sdi2324814spring.controllers;
 
 import com.uniovi.sdi2324814spring.entities.Professor;
 import com.uniovi.sdi2324814spring.services.ProfessorsService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class ProfessorsController {
 
     private final ProfessorsService professorsService;
@@ -14,21 +16,27 @@ public class ProfessorsController {
     }
 
     @RequestMapping("/professor/list")
-    public String getList() {
-        return professorsService.getProfessors().toString();
+    public String getList(Model model) {
+        model.addAttribute("professorList", professorsService.getProfessors());
+        return "professor/list";
+    }
+    @RequestMapping(value = "/professor/add")
+    public String getProfessor() {
+        return "professor/add";
     }
     @RequestMapping(value = "/professor/add", method = RequestMethod.POST)
-    public String setMark(@ModelAttribute Professor professor) {
+    public String setProfessor(@ModelAttribute Professor professor) {
         professorsService.addProfessor(professor);
-        return "Added professor: " + professor.toString();
+        return "redirect:/professor/list";
     }
     @RequestMapping("/professor/details/{id}")
-    public String getDetail(@PathVariable Long id) {
-        return professorsService.getProfessor(id).toString();
+    public String getDetail(Model model, @PathVariable Long id) {
+        model.addAttribute("professor", professorsService.getProfessor(id));
+        return "professor/details";
     }
     @RequestMapping("/professor/delete/{id}")
-    public String deleteMark(@PathVariable Long id) {
+    public String deleteProfessor(@ModelAttribute Professor professor, @PathVariable Long id){
         professorsService.deleteProfessor(id);
-        return "Professor removed";
+        return "redirect:/professor/list";
     }
 }

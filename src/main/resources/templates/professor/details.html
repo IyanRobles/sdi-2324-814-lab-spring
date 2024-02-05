@@ -12,7 +12,6 @@
     <!-- JS files: jQuery first, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
@@ -66,32 +65,35 @@
         </form> -->
     </div>
 </nav>
-<div class="container" id="main-container">
-    <h2>Editar nota</h2>
-    <form class="form-horizontal" method="post" th:action="${'/mark/edit/' + mark.id}">
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="description">Descripción:</label>
-            <div class="col-sm-10">
-                <input th:value="${mark.description}" type="text" class="form-control" name="description" id="description"
-                       placeholder="Ejemplo Ejercicio 1" required="true"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="score">Puntuación:</label>
-            <div class="col-sm-10">
-                <input th:value="${mark.score}" type="number" class="form-control" name="score" id="score"
-                       placeholder="Entre 0 y 10"
-                       required="true"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Modificar</button>
-            </div>
-        </div>
-    </form>
-</div>
 
+<div class="container" id="main-container">
+    <h2>Detalles del profesor</h2>
+    <div class="card">
+        <div class="card-header">DNI</div>
+        <div class="card-body">
+            <p class="card-text" th:text="${professor.dni}">DNI</p>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">Nombre</div>
+        <div class="card-body">
+            <p class="card-text" th:text="${professor.name}">Nombre</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">Apellidos</div>
+        <div class="card-body">
+            <p class="card-text" th:text="${professor.surname}">Apellidos</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">Categoría</div>
+        <div class="card-body">
+            <p class="card-text" th:text="${professor.category}">Categoría</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
