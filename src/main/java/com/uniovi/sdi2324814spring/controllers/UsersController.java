@@ -1,5 +1,6 @@
 package com.uniovi.sdi2324814spring.controllers;
 
+import com.uniovi.sdi2324814spring.entities.Mark;
 import com.uniovi.sdi2324814spring.entities.User;
 import com.uniovi.sdi2324814spring.services.SecurityService;
 import com.uniovi.sdi2324814spring.services.UsersService;
@@ -60,9 +61,9 @@ public class UsersController {
         return "user/edit";
     }
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
-        usersService.addUser(user);
-        return "redirect:/user/details/" + id;
+    public String setEdit(@ModelAttribute User user, @PathVariable Long id){
+        usersService.updateUser(id, user);
+        return "redirect:/user/details/"+id;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -94,5 +95,11 @@ public class UsersController {
         User activeUser = usersService.getUserByDni(dni);
         model.addAttribute("markList", activeUser.getMarks());
         return "home";
+    }
+
+    @RequestMapping("/user/list/update")
+    public String updateList(Model model){
+        model.addAttribute("usersList", usersService.getUsers() );
+        return "user/list :: usersTable";
     }
 }

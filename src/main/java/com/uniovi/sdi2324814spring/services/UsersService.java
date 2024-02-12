@@ -42,4 +42,14 @@ public class UsersService {
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
     }
+
+    public void updateUser(long id, User newUser) {
+        if (newUser.equals(null))
+            return;
+        User originalUser = getUser(id);
+        originalUser.setDni(newUser.getDni());
+        originalUser.setName(newUser.getName());
+        originalUser.setLastName(newUser.getLastName());
+        usersRepository.save(originalUser);
+    }
 }
