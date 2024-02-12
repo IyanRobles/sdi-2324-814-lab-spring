@@ -1,22 +1,28 @@
 package com.uniovi.sdi2324814spring.controllers;
 
 import com.uniovi.sdi2324814spring.entities.Mark;
+import com.uniovi.sdi2324814spring.entities.User;
 import com.uniovi.sdi2324814spring.services.MarksService;
 import com.uniovi.sdi2324814spring.services.UsersService;
+import com.uniovi.sdi2324814spring.validators.MarkFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MarksController {
 
     // Inyectamos el servicio por inyección basada en constructor
+    private final MarkFormValidator markFormValidator;
     private final MarksService marksService;
     private final UsersService usersService;
-    public MarksController(MarksService marksService, UsersService usersService) {
+    public MarksController(MarksService marksService, UsersService usersService, MarkFormValidator markFormValidator) {
         this.marksService = marksService;
         this.usersService = usersService;
+        this.markFormValidator = markFormValidator;
     }
 
     @RequestMapping(value = "/mark/add")
@@ -29,8 +35,18 @@ public class MarksController {
         model.addAttribute("markList", marksService.getMarks());
         return "mark/list";
     }
+    @RequestMapping(value = "/mark/add", method = RequestMethod.GET)
+    public String setMark(Model model) {
+        model.addAttribute("mark", new Mark());
+        return "mark/add";
+    }
     @RequestMapping(value = "/mark/add", method = RequestMethod.POST)
-    public String setMark(@ModelAttribute Mark mark) {
+    public String setMark(@Validated Mark mark, BindingResult result) {
+        markFormValidator.validate(mark, result);
+        if (result.hasErrors()) {
+            return "mark/add";
+        }
+
         marksService.addMark(mark);
         return "redirect:/mark/list";
     }

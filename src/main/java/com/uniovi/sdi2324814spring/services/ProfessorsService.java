@@ -1,12 +1,14 @@
 package com.uniovi.sdi2324814spring.services;
 
 import com.uniovi.sdi2324814spring.entities.Professor;
+import com.uniovi.sdi2324814spring.entities.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfessorsService {
@@ -37,4 +39,7 @@ public class ProfessorsService {
         professorsList.removeIf(professor -> professor.getId().equals(id));
     }
 
+    public Optional<Professor> getProfessorByDni(String dni) {
+        return professorsList.stream().filter(professor -> professor.getDni().equals(dni)).findFirst();
+    }
 }
