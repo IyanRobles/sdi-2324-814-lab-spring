@@ -25,11 +25,6 @@ public class MarksController {
         this.markFormValidator = markFormValidator;
     }
 
-    @RequestMapping(value = "/mark/add")
-    public String getMark(Model model){
-        model.addAttribute("usersList", usersService.getUsers());
-        return "mark/add";
-    }
     @RequestMapping("/mark/list")
     public String getList(Model model) {
         model.addAttribute("markList", marksService.getMarks());
@@ -38,12 +33,14 @@ public class MarksController {
     @RequestMapping(value = "/mark/add", method = RequestMethod.GET)
     public String setMark(Model model) {
         model.addAttribute("mark", new Mark());
+        model.addAttribute("usersList", usersService.getUsers());
         return "mark/add";
     }
     @RequestMapping(value = "/mark/add", method = RequestMethod.POST)
-    public String setMark(@Validated Mark mark, BindingResult result) {
+    public String setMark(@Validated Mark mark, BindingResult result, Model model) {
         markFormValidator.validate(mark, result);
         if (result.hasErrors()) {
+            model.addAttribute("usersList", usersService.getUsers());
             return "mark/add";
         }
 
