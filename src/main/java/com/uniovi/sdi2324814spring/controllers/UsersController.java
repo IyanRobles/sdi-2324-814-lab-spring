@@ -15,10 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UsersController {
@@ -38,10 +38,19 @@ public class UsersController {
     }
 
     @RequestMapping("/user/list")
-    public String getListado(Model model) {
-        model.addAttribute("usersList", usersService.getUsers());
+    public String getList(Model model, Pageable pageable,
+                          @RequestParam(value="", required = false) String searchText) {
+        Page<User> users;
+        if (searchText != null && !searchText.isEmpty()) {
+            users = usersService.searchUsersByName(pageable, searchText);
+        } else {
+            users = usersService.getUsers(pageable);
+        }
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
         return "user/list";
     }
+
     @RequestMapping(value = "/user/add")
     public String getUser(Model model) {
         model.addAttribute("rolesList", rolesService.getRoles());
@@ -108,8 +117,9 @@ public class UsersController {
     }
 
     @RequestMapping("/user/list/update")
-    public String updateList(Model model){
-        model.addAttribute("usersList", usersService.getUsers() );
+    public String updateList(Model model, Pageable pageable){
+        Page<User> users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
         return "user/list :: usersTable";
     }
 }
